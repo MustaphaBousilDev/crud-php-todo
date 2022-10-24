@@ -152,6 +152,11 @@
 						</div>
 						<div class="my-table-todo card-body bg-white p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
+							<?php 
+                            $stmt_add=$conn->prepare('SELECT * FROM todo WHERE status=1');
+			                $stmt_add->execute();
+			                $todo_all=$stmt_add->fetchAll();
+			                ?>
 							<?php if(!empty($todo_all)):?>
 								<?php foreach($todo_all as $todo): ?>
 									<button data-index="" class="task border-0 bg-white text-start d-flex border-bottom w-100 p-10px">
@@ -204,22 +209,53 @@
 						</div>
 						<div class="my-table-now card-body  bg-white p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
-							<button class="border-0 bg-white text-start d-flex border-bottom w-100 p-10px">
-								<div class="col-1">
-									<i style="font-size: 20px;" class="bi bi-check-circle text-success"></i>
-								</div>
-								<div class="col-11">
-									<h6 class="card-title mt-1">Keep all the updated requirements in one place</h6>
+							<?php 
+                            $stmt_add_pro=$conn->prepare('SELECT * FROM todo WHERE status=2');
+			                $stmt_add_pro->execute();
+			                $todo_all_pro=$stmt_add_pro->fetchAll();
+			                ?>
+							<?php if(!empty($todo_all_pro)):?>
+								<?php foreach($todo_all_pro as $todo): ?>
+									<button data-index="" class="task border-0 bg-white text-start d-flex border-bottom w-100 p-10px">
+								    <div class="col-1">
+									<i style="font-size: 20px;" class="bi bi-question-circle text-success"></i>
+								    </div>
+								    <div class="col-11">
+									<h6 class="card-title mt-1"><?=$todo['title']?></h6>
 									<div class="">
-										<div style="font-size:10px;" class="text-gray">#1 created in 2022-10-08</div>
-										<div style="font-size: 11px;" class="text-dark" title="There is hardly anything more frustrating than having to look for current requirements in tens of comments under the actual description or having to decide which commenter is actually authorized to change the requirements. The goal here is to keep all the up-to-date requirements and details in the main/primary description of a task. Even though the information in comments may affect initial criteria, just update this primary description accordingly.">There is hardly anything more frustrating than having t...</div>
+										<div style="font-size:10px;" class="text-gray"># created in <?=$todo['date']?></div>
+										<div style="font-size: 11px;" class="text-dark" title="There is hardly anything more frustrating than having to look for current requirements in tens of comments under the actual description or having to decide which commenter is actually authorized to change the requirements. The goal here is to keep all the up-to-date requirements and details in the main/primary description of a task. Even though the information in comments may affect initial criteria, just update this primary description accordingly.">
+										<?=$todo['description']?>
+									    </div>
 									</div>
+									<div class="d-flex justify-content-between">
 									<div class="">
-										<span style="font-size: 8px;" class="btn-xs btn-primary py-1 px-2 rounded">High</span>
-										<span style="font-size: 8px;" class="btn-xs btn-light text-black py-1 px-2 rounded ">Feature</span>
+										<span style="font-size: 8px;" class="btn-xs btn-primary py-1 px-2 rounded">
+										    <?=$todo['type']?>
+									    </span>
+										<span style="font-size: 8px;" class="btn-xs btn-light text-black py-1 px-2 rounded ">
+										    <?=$todo['priority'] ?>
+									    </span>
+										
+									</div>
+									<a 
+									onclick="modal.classList.toggle(darkTheme);modal.classList.add(d);localStorage.setItem('selected-theme',getCurrentTheme())"
+									href="index.php?do=Edit&user_id=<?=$todo['ID']?>"
+									class="btn-sm btn-success"
+					                >
+									Edit
+								    </a>
+									<a 
+									href="index.php?do=Delete&user_id=<?=$todo['ID']?>"
+									class="btn-sm btn-danger"
+					                >
+									Delete
+								    </a>
 									</div>
 								</div>
-							</button>
+							    </button>
+								<?php endforeach ?>
+							<?php endif;  ?>
 						</div>
 					</div>
 				</div>
@@ -230,22 +266,53 @@
 						</div>
 						<div class="my-table-done card-body bg-white p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
-							<button class="border-0 bg-white text-start d-flex w-100 p-10px">
-								<div class="col-1">
-									<i style="font-size: 20px;" class="bx bx-loader-alt text-success"></i>
-								</div>
-								<div class="col-11">
-									<h6 class="card-title mt-1">Keep all the updated requirements in one place</h6>
+							<?php 
+                            $stmt_add_done=$conn->prepare('SELECT * FROM todo WHERE status=3');
+			                $stmt_add_done->execute();
+			                $todo_all_done=$stmt_add_done->fetchAll();
+			                ?>
+							<?php if(!empty($todo_all_done)):?>
+								<?php foreach($todo_all_done as $todo): ?>
+									<button data-index="" class="task border-0 bg-white text-start d-flex border-bottom w-100 p-10px">
+								    <div class="col-1">
+									<i style="font-size: 20px;" class="bi bi-question-circle text-success"></i>
+								    </div>
+								    <div class="col-11">
+									<h6 class="card-title mt-1"><?=$todo['title']?></h6>
 									<div class="">
-										<div style="font-size:10px;" class="text-gray">#1 created in 2022-10-08</div>
-										<div style="font-size: 11px;" class="text-dark" title="There is hardly anything more frustrating than having to look for current requirements in tens of comments under the actual description or having to decide which commenter is actually authorized to change the requirements. The goal here is to keep all the up-to-date requirements and details in the main/primary description of a task. Even though the information in comments may affect initial criteria, just update this primary description accordingly.">There is hardly anything more frustrating than having t...</div>
+										<div style="font-size:10px;" class="text-gray"># created in <?=$todo['date']?></div>
+										<div style="font-size: 11px;" class="text-dark" title="There is hardly anything more frustrating than having to look for current requirements in tens of comments under the actual description or having to decide which commenter is actually authorized to change the requirements. The goal here is to keep all the up-to-date requirements and details in the main/primary description of a task. Even though the information in comments may affect initial criteria, just update this primary description accordingly.">
+								<?=$todo['description']?>
 									</div>
+									</div>
+									<div class="d-flex justify-content-between">
 									<div class="">
-										<span style="font-size: 8px;" class="btn-xs btn-primary py-1 px-2 rounded">High</span>
-										<span style="font-size: 8px;" class="btn-xs btn-light text-black py-1 px-2 rounded ">Feature</span>
+										<span style="font-size: 8px;" class="btn-xs btn-primary py-1 px-2 rounded">
+										    <?=$todo['type']?>
+									    </span>
+										<span style="font-size: 8px;" class="btn-xs btn-light text-black py-1 px-2 rounded ">
+										    <?=$todo['priority'] ?>
+									    </span>
+										
+									</div>
+									<a 
+									onclick="modal.classList.toggle(darkTheme);modal.classList.add(d);localStorage.setItem('selected-theme',getCurrentTheme())"
+									href="index.php?do=Edit&user_id=<?=$todo['ID']?>"
+									class="btn-sm btn-success"
+					                >
+									Edit
+								    </a>
+									<a 
+									href="index.php?do=Delete&user_id=<?=$todo['ID']?>"
+									class="btn-sm btn-danger"
+					                >
+									Delete
+								    </a>
 									</div>
 								</div>
-							</button>
+							    </button>
+								<?php endforeach ?>
+							<?php endif;  ?>
 						</div>
 					</div>
 				</div>
